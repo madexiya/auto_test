@@ -10,3 +10,6 @@ class TestSys:
 
     def test_query_sys(self):
         self.sys_manage.page_query_sys()
+
+    def test_query_schema(self):
+        print(self.sys_manage.page_query_schema())

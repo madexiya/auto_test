@@ -12,7 +12,7 @@ class DataDetail:
                          "tEL1d1a8Z7cjXqlrSkWcpBEUCKSi4WdPezHguaVzVaktWA"
     }
 
-    def physical_model_baseinfo(self):
+    def table_baseinfo(self):
         """
         物理模型：表基础信息
         :return:
@@ -59,4 +59,35 @@ class DataDetail:
         表变更
         :return:
         """
-        pass
+        params = {"id": ""}
+        r = requests.request("get", f"{self.url}/web/physical/model/change", headers=self.headers, params=params)
+        return r.json()
+
+    def field_change(self):
+        """
+        字段变更
+        :return:
+        """
+        params = {
+            "physModeId": "",
+            "entryName": ""
+        }
+        r = requests.request("get", f"{self.url}/web/physical/entry/change", headers=self.headers, params=params)
+        return r.json()
+
+    def field_change_detail(self):
+        """
+        字段变更详情
+        :return:
+        """
+        params = {
+            "physModeId": "",
+            "id": ""
+        }
+        r = requests.request("get", f"{self.url}/web/physical/entry/change-detail", headers=self.headers, params=params)
+        return r.json()
+
+    def foreignkey_relation(self):
+        params = {"id": ""}
+        r = requests.request("get", f"{self.url}/web/physical/model/foreign-key", headers=self.headers, params=params)
+        return r.json()

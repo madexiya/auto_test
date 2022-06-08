@@ -2,6 +2,9 @@ import requests
 
 
 class Theme:
+    """
+    主题域
+    """
     url = "http://10.192.119.24:8085"
     headers = {
         "Authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VySWQiOiIiLCJhcHBJZCI6IiIsInVzZXJOYW1lIjoienQyMzA"
@@ -9,15 +12,11 @@ class Theme:
                          "tEL1d1a8Z7cjXqlrSkWcpBEUCKSi4WdPezHguaVzVaktWA"
     }
 
-    def get_theme_list(self):
-        params = {
-            "themeType": "",
-            "pid": ""
-        }
-        r = requests.request("get", f"{self.url}/web/business/theme/list", params=params, headers=self.headers)
-        print(r.json())
-
     def get_theme_class_list(self):
+        """
+        获取主题域层级列表
+        :return:
+        """
         params = {"themeName": ""}
         r = requests.request("get", f"{self.url}/web/business/theme/classList", params=params, headers=self.headers)
         print(r.json())
