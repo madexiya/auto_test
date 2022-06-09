@@ -1,3 +1,4 @@
+import pytest
 import requests
 
 from dms.api.scripts.baseapi import BaseApi
@@ -18,13 +19,14 @@ class SysManage:
     #                      "LzXjMLa9ciZxps-TgOERHJKeKBrwpioQi2omWNjx3Wng"
     # }
 
+    @pytest.mark.parametrize()
     def add_sys(self):
         datas = {
-            "bizCode": "MAKA",
-            "bizName": "玛卡巴卡系统",
+            "bizCode": "pdx",
+            "bizName": "派大星",
             "bizStatus": 0,  # 系统状态; 0 未创建 1 使用中 2 停用
             "isDataDict": 0,  # 是否有数据字典; 0 否 1 是
-            "principal": "zt23018",
+            "principal": "zt23088",
             "applicationUrl": "www.du.com",
             "bizDesc": "玛卡巴卡呜",
             "bizFlowDiagramUrl": "www.maka.com",
@@ -34,7 +36,7 @@ class SysManage:
             "isBizFlowDiagram": 0,
             "isEr": 0,  # 是否有er图，0 否 1 是
             "subjectDomain": "marketSales",
-            "sysDeptCode": "10801"
+            "sysDeptCode": "2835090"  # 传部门ID
         }
         r = requests.request("post", f"{self.url}/businessInfo/add", json=datas, headers=self.headers)
         print(r.json())
@@ -49,6 +51,11 @@ class SysManage:
             "userCode": ""
         }
         r = requests.request("get", f"{self.url}/businessInfo/page", headers=self.headers, params=params)
+        print(r.json())
+
+    def query_sys_detail(self):
+        params = {"id": 56}
+        r = requests.request("get", f"{self.url}/businessInfo/detail", headers=self.headers, params=params)
         print(r.json())
 
     def update_sys(self):
@@ -73,17 +80,51 @@ class SysManage:
         r = requests.request("post", f"{self.url}/businessInfo/update", json=datas, headers=self.headers)
         print(r.json())
 
-    def page_query_schema(self):
+    def query_unbound_schema(self, biz_code, page_num, page_size, dbname_or_id):
+        """
+        分页查询未绑定的schema列表
+        :return:
+        """
+        params = {
+            "bizCode": biz_code,
+            "pageNum": page_num,
+            "pageSize": page_size,
+            "dbNameOrId": dbname_or_id
+        }
+        r = requests.request("get", f"{self.url}/web/collect/schema/with-biz/page", headers=self.headers, params=params)
+        return r.json()
+
+    def query_binding_schema(self):
         params = {
             "pageNum": "1",
             "pageSize": "10",
-            "dbNameOrId": ""
+            "dbNameOrId": "",
+            "bizCode": "UC-WT"
+        }
+        r = requests.request("get", f"{self.url}/businessInfo/schema-biz-releated/get", headers=self.headers,
+                             params=params)
+        return r.json()
+
+    def page_query_schema(self):
+        """
+        分页查询 schema维护关系列表
+        :return:
+        """
+        params = {
+            "pageNum": "1",
+            "pageSize": "10",
+            "dbNameOrId": "",
+            "bizCode": "UC-WT"
         }
         r = requests.request("get", f"{self.url}/businessInfo/schema-biz-releated/get", headers=self.headers,
                              params=params)
         return r.json()
 
     def maintain_schema(self):
+        """
+        维护schema
+        :return:
+        """
         datas = [
             {
                 "bind": 0,
